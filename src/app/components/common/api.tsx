@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { Avatar, List } from 'antd';
 
 interface ExamItem {
   id: number;
@@ -35,22 +36,24 @@ const APIComponent: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      {examList ? (
-        <div>
-        <h2>시험지 목록</h2>
-        {examList.map((examItem) => (
-        <ul key={examItem.id}>
-            <li>{examItem.shortTitle}</li>
-            <li>{examItem.section.name} - {examItem.subject.name}</li>
-            <li>공개여부 : {examItem.isVisible == true ? '공개됨' : '비공개'}</li>
-        </ul>
-        ))}  
-      </div>
-      ) : (
-        <div>Loading...</div>
+    <List
+      bordered
+      dataSource={examList}
+      renderItem={(examItem : ExamItem) => (
+        <List.Item>
+          <img
+            width={150}
+            alt="pdf"
+            src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+          />
+          <List.Item.Meta
+              style={{ "padding": "10px"}}
+              title={<a href="/item/">{examItem.shortTitle} <br/>{examItem.section.name} - {examItem.subject.name}</a>}
+              description= {examItem.isVisible == true ? '공개여부 : 공개됨' : '공개여부 : 비공개'}
+          />
+        </List.Item>
       )}
-    </div>
+    />
   );
 };
 

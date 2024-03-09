@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Layout } from 'antd';
+import APIComponent from './components/common/api';
 
 export default function Home() {
   return (
-    <main>
-      Start Exam Paper App
-    </main>
+    <Layout style={{ margin: '20px 50px' }}>
+      <APIComponent />
+    </Layout>
   );
 }
