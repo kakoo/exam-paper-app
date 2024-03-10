@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { Avatar, List } from 'antd';
+import { List } from 'antd';
 
 interface ExamItem {
-  id: number;
+  id: string;
   explanationPDFDownloadURL : string;
   shortTitle: string;
   section : {
@@ -15,7 +15,7 @@ interface ExamItem {
   isVisible : boolean;
 }
 
-const APIComponent: React.FC = () => {
+const ExamListComponent: React.FC = () => {
   const [examList, setExamsData] = useState<ExamItem[]>([]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const APIComponent: React.FC = () => {
           />
           <List.Item.Meta
               style={{ "padding": "10px"}}
-              title={<a href="/item/">{examItem.shortTitle} <br/>{examItem.section.name} - {examItem.subject.name}</a>}
+              title={<a href={"/exam?id=" + examItem.id}>{examItem.shortTitle} <br/>{examItem.section.name} - {examItem.subject.name}</a>}
               description= {examItem.isVisible == true ? '공개여부 : 공개됨' : '공개여부 : 비공개'}
           />
         </List.Item>
@@ -57,4 +57,4 @@ const APIComponent: React.FC = () => {
   );
 };
 
-export default APIComponent;
+export default ExamListComponent;
