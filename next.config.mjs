@@ -2,6 +2,20 @@
 
 const nextConfig = {
     reactStrictMode: true,
+    webpack: (config) => {
+      config.resolve.alias.canvas = false;
+      config.module.rules.push({
+        test: /\.(bin|node)$/,
+        loader: 'file-loader',
+        options: {
+        publicPath: '/_next/static/runtime/',
+        outputPath: 'static/runtime/',
+        name: '[name].[hash].[ext]',
+        },
+      });
+  
+      return config;
+    },
     async rewrites() {
       return [
         {
