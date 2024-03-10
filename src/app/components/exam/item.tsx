@@ -3,6 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Layout, Radio, Button, Form, Input, message, Space } from 'antd';
+import PDFPreviewComponent from '../common/pdf/preview'
 
 interface Item {
   id: string;
@@ -104,6 +105,7 @@ const ExamItemComponent = () => {
         </Space>
       </Form.Item>
     </Form>
+    <PDFPreviewComponent pdfUrl={examItem.explanationPDFDownloadURL}/>
     </Layout>
   );
 };
