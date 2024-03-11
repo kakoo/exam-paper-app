@@ -6,6 +6,7 @@ import type { RadioChangeEvent } from 'antd';
 import { Layout, Radio, Button, Form, Input, message, Space } from 'antd';
 import { fetchExamDetail, updateExamInfo } from '../../services/exam_paper_api';
 import PDFPreviewComponent from '../common/pdf/preview';
+import { pdfThumbnails } from '../common/pdf/thumbnails'
 
 interface Item {
   id: string;
@@ -57,6 +58,9 @@ const ExamItemComponent = () => {
         const examDetail = await fetchExamDetail(id);
         setExamData(examDetail);
         setIsVisible(examDetail.isVisible);
+
+        //TODO const examPdfThumbnails = await pdfThumbnails(examDetail.explanationPDFDownloadURL);
+
       } catch (error) {
         console.error('Error get data:', error);
       }
