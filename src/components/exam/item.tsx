@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from 'react';
 import type { RadioChangeEvent } from 'antd';
 import { Layout, Radio, Button, Form, Input, message, Space } from 'antd';
-import PDFPreviewComponent from '../common/pdf/preview'
+import { fetchExamDetail, updateExamInfo } from '../../services/exam_paper_api';
+import PDFPreviewComponent from '../common/pdf/preview';
 
 interface Item {
   id: string;
@@ -23,7 +24,6 @@ const ExamItemComponent = () => {
   const router = useRouter();
 
   const id = searchParams.get('id');
-  const url = `/api/exam-paper/${id}?participant=${process.env.NEXT_PUBLIC_API_ID}`;
 
   const onFinishFailed = () => {
     message.error('시험지 정보를 확인해주세요.');
@@ -43,20 +43,7 @@ const ExamItemComponent = () => {
     try {
         values.isVisible = isVisible;
         console.log(values);
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values), // 사용자가 입력한 데이터를 JSON 형식으로 변환하여 body에 넣음
-        });
-
-        // 응답 확인
-        if (response.ok) {
-            console.log('Data updated successfully!');
-        } else {
-            console.error('Failed to update data:', response.statusText);
-        }
+        await updateExamInfo(id, values);
     } catch (error) {
         console.error('Error updating data:', error);
     } finally {
@@ -67,13 +54,9 @@ const ExamItemComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/exam-paper/${id}?participant=${process.env.NEXT_PUBLIC_API_ID}`,{
-          method: "GET",
-          cache: "no-store",
-        });
-        const jsonData = await response.json();
-        setExamData(jsonData.data);
-        setIsVisible(jsonData.data.isVisible);
+        const examDetail = await fetchExamDetail(id);
+        setExamData(examDetail);
+        setIsVisible(examDetail.isVisible);
       } catch (error) {
         console.error('Error get data:', error);
       }

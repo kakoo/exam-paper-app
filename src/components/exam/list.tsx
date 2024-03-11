@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { List } from 'antd';
+import { fetchExamList } from '../../services/exam_paper_api';
 
 interface ExamItem {
   id: string;
@@ -21,12 +22,8 @@ const ExamListComponent: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/exam-papers?participant=${process.env.NEXT_PUBLIC_API_ID}`,{
-          method: "GET",
-          cache: "no-store",
-        });
-        const jsonData = await response.json();
-        setExamsData(jsonData.data.sort((a:any, b:any) => b.executionYear - a.executionYear));
+        const examList = await fetchExamList();
+        setExamsData(examList);
       } catch (error) {
         console.error('Error get data:', error);
       }
